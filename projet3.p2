@@ -4,101 +4,104 @@
  phrase(u,v) -> ph_aff(u,".".v);
  phrase(u,v) -> ph_int(u,"?".v);
 
- ph_aff(u,v) -> sujet(u,w) gv(w,v);
+ ph_aff(u,v) -> sujet(u,w,a,b) gv(w,v,a,b);
 
  ph_int("est"."-"."ce"."que".u,v) -> ph_aff(u,v);
  ph_int("qui".u,v) -> gv(u,v);
- ph_int(u,v) -> sujet(u,w) gv_til(w,v);			
- ph_int("pourquoi".u,v) -> sujet(u,w) gv_til(w,v);		% est-il -> til %
- ph_int("de"."qui".u,v) -> sujet(u,w) gv_til_partiel(w,v);
+ ph_int(u,v) -> sujet(u,w,a,b) gv_til(w,v,a,b);			
+ ph_int("pourquoi".u,v) -> sujet(u,w,a,b) gv_til(w,v,a,b);		% est-il -> til %
+ ph_int("de"."qui".u,v) -> sujet(u,w,a,b) gv_til_partiel(w,v,a,b);
  ph_int("que"."sais"."-"."tu".u,u) ->;
 
- sujet(u,v) -> nom_pr(u,v);
+ sujet(u,v,a,singulier) -> nom_pr(u,v,a,b);
 
- gv(u,v) -> verbe(u,w) gn(w,v);
+ gv(u,v,a,b) -> verbe(u,w,b) gn(w,v,a,b);
 
- gv_til(u,v) -> verbe(u,"-".w) pronom(w,x) gn(x,v);
+ gv_til(u,v,a,b) -> verbe(u,"-".w,b) pronom(w,x,a,b) gn(x,v,a,b);
 
- gv_til_partiel(u,v) -> verbe(u,"-".w) pronom(w,x) gn_partiel(x,v);
+ gv_til_partiel(u,v,a,b) -> verbe(u,"-".w,b) pronom(w,x,a,b) gn_partiel(x,v,a,b);
 
- verbe("est".u,u) ->;
- verbe("sont".u,u) ->;
+%Ici on n a pas besoin de savoir si c est masculin ou feminin %
+ verbe("est".u,u,singulier) ->;
+ verbe("sont".u,u,pluriel) ->;
  
- gn(u,v) -> nom_pr(u,v);
- gn(u,v) -> art_ind(u,w) nom_com1(w,v);
- gn(u,v) -> art_def(u,w) nom_com2(w,x) gp(x,v);
+ gn(u,v,a,singulier) -> nom_pr(u,v,a,b);
+ gn(u,v,a,b) -> art_ind(u,w,a,b) nom_com1(w,v,a,b);
+ gn(u,v,a,b) -> art_def(u,w,a,b) nom_com2(w,x,a,b) gp(x,v);
 
- gn_partiel(u,v) -> art_def(u,w) nom_com2(w,v);
+ gn_partiel(u,v,a,b) -> art_def(u,w,a,b) nom_com2(w,v,a,b);
 
- art_def("le".u,u) ->;
- art_def("la".u,u) ->;
- art_def("les".u,u) ->;
+ art_def("le".u,u,masculin,singulier) ->;
+ art_def("la".u,u,feminin,singulier) ->;
+ art_def("les".u,u,a,pluriel) ->;
 
- art_ind("un".u,u) ->;
- art_ind("une".u,u) ->;
- art_ind("des".u,u) ->;
+ art_ind("un".u,u,masculin,singulier) ->;
+ art_ind("une".u,u,feminin,singulier) ->;
+ art_ind("des".u,u,a,pluriel) ->;
 
- gp("de".u,v) -> gn(u,v);
+ gp("de".u,v) -> gn(u,v,a,b); %groupe prepositionnel%
 
- pronom("il".u,u) ->;
- pronom("ils".u,u) ->;
- pronom("elle".u,u) ->;
- pronom("elles".u,u) ->;
+ pronom("il".u,u,masculin,singulier) ->;
+ pronom("ils".u,u,masculin,pluriel) ->;
+ pronom("elle".u,u,feminin,singulier) ->;
+ pronom("elles".u,u,feminin,pluriel) ->;
 
- nom_com1("homme".u,u) ->;
- nom_com1("hommes".u,u) ->;
- nom_com1("femme".u,u) ->;
- nom_com1("femmes".u,u) ->;
+ nom_com1("homme".u,u,masculin,singulier) ->;
+ nom_com1("hommes".u,u,masculin,pluriel) ->;
+ nom_com1("femme".u,u,feminin,singulier) ->;
+ nom_com1("femmes".u,u,feminin,pluriel) ->;
 
- nom_com2("pere".u,u) ->;
- nom_com2("mere".u,u) ->;
- nom_com2("frere".u,u) ->;
- nom_com2("freres".u,u) ->;
- nom_com2("soeur".u,u) ->;
- nom_com2("soeurs".u,u) ->;
- nom_com2("fils".u,u) ->;
- nom_com2("fille".u,u) ->;
- nom_com2("filles".u,u) ->;
- nom_com2("oncle".u,u) ->;
- nom_com2("oncles".u,u) ->;
- nom_com2("tante".u,u) ->;
- nom_com2("tantes".u,u) ->;
- nom_com2("cousin".u,u) ->;
- nom_com2("cousins".u,u) ->;
- nom_com2("cousine".u,u) ->;
- nom_com2("cousines".u,u) ->;
- nom_com2("grand"."-"."pere".u,u) ->;
- nom_com2("grand"."-"."peres".u,u) ->;
- nom_com2("grand"."-"."mere".u,u) ->;
- nom_com2("grand"."-"."meres".u,u) ->;
- nom_com2("petit"."-"."fils".u,u) ->;
- nom_com2("petits"."-"."fils".u,u) ->;
- nom_com2("petite"."-"."fille".u,u) ->;
- nom_com2("petites"."-"."filles".u,u) ->;
+ nom_com2("pere".u,u,masculin,singulier) ->;
+ nom_com2("mere".u,u,feminin,singulier) ->;
+ nom_com2("frere".u,u,masculin,singulier) ->;
+ nom_com2("freres".u,u,masculin,pluriel) ->;
+ nom_com2("soeur".u,u,feminin,singulier) ->;
+ nom_com2("soeurs".u,u,feminin,pluriel) ->;
+ nom_com2("fils".u,u,masculin,singulier) ->;
+ nom_com2("fille".u,u,feminin,singulier) ->;
+ nom_com2("filles".u,u,feminin,pluriel) ->;
+ nom_com2("oncle".u,u,masculin,singulier) ->;
+ nom_com2("oncles".u,u,masculin,pluriel) ->;
+ nom_com2("tante".u,u,feminin,singulier) ->;
+ nom_com2("tantes".u,u,feminin,pluriel) ->;
+ nom_com2("cousin".u,u,masculin,singulier) ->;
+ nom_com2("cousins".u,u,masculin,pluriel) ->;
+ nom_com2("cousine".u,u,feminin,singulier) ->;
+ nom_com2("cousines".u,u,feminin,pluriel) ->;
+ nom_com2("grand"."-"."pere".u,u,masculin,singulier) ->;
+ nom_com2("grand"."-"."peres".u,u,masculin,pluriel) ->;
+ nom_com2("grand"."-"."mere".u,u,feminin,singulier) ->;
+ nom_com2("grand"."-"."meres".u,u,feminin,pluriel) ->;
+ nom_com2("petit"."-"."fils".u,u,masculin,singulier) ->;
+ nom_com2("petits"."-"."fils".u,u,masculin,pluriel) ->;
+ nom_com2("petite"."-"."fille".u,u,feminin,singulier) ->;
+ nom_com2("petites"."-"."filles".u,u,feminin,pluriel) ->;
 
- nom_pr("Marie".u,u) ->;
- nom_pr("Nina".u,u) ->;
- nom_pr("Lea".u,u) ->;
- nom_pr("Jade".u,u) ->;
- nom_pr("Manon".u,u) ->;
- nom_pr("Paul".u,u) ->;
- nom_pr("Jean".u,u) ->;
- nom_pr("Luc".u,u) ->;
- nom_pr("Tom".u,u) ->;
- nom_pr("Hugo".u,u) ->;
+ nom_pr("Marie".u,u,feminin,singulier) ->;
+ nom_pr("Nina".u,u,feminin,singulier) ->;
+ nom_pr("Lea".u,u,feminin,singulier) ->;
+ nom_pr("Jade".u,u,feminin,singulier) ->;
+ nom_pr("Manon".u,u,feminin,singulier) ->;
+ nom_pr("Paul".u,u,masculin,singulier) ->;
+ nom_pr("Jean".u,u,masculin,singulier) ->;
+ nom_pr("Luc".u,u,masculin,singulier) ->;
+ nom_pr("Tom".u,u,masculin,singulier) ->;
+ nom_pr("Hugo".u,u,masculin,singulier) ->;
  
  %---------- Regles de forme usuelle ----------%
  
  forme_usuelle( nil, nil)->;
  forme_usuelle( x.l, x.m) -> forme_usuelle(l, m);
- forme_usuelle("d"."'"."un".l, "de"."un".m) -> forme_usuelle(l,m);
- forme_usuelle("d"."'"."une".l, "de"."une".m) -> forme_usuelle(l,m);
+ %forme_usuelle("d"."'"."un".l, "de"."un".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("d"."'"."une".l, "de"."une".m) -> forme_usuelle(l,m);%
+ forme_usuelle("d"."'".l, "de".m) -> forme_usuelle(l,m);
  forme_usuelle("du".l, "de"."le".m) -> forme_usuelle(l,m);
- forme_usuelle("l"."'"."oncle".l, "le"."oncle".m) -> forme_usuelle(l,m);
- forme_usuelle("qu"."'"."il".l, "que"."il".m) -> forme_usuelle(l,m);
- forme_usuelle("qu"."'"."ils".l, "que"."ils".m) -> forme_usuelle(l,m);
- forme_usuelle("qu"."'"."elle".l, "que"."elle".m) -> forme_usuelle(l,m);
- forme_usuelle("qu"."'"."elles".l, "que"."elles".m) -> forme_usuelle(l,m);
+ %forme_usuelle("l"."'"."oncle".l, "le"."oncle".m) -> forme_usuelle(l,m);%
+ forme_usuelle("l"."'".l, "le".m) -> forme_usuelle(l,m);
+ forme_usuelle("qu"."'".l, "que".m) -> forme_usuelle(l,m);
+ %forme_usuelle("qu"."'"."ils".l, "que"."ils".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("qu"."'"."elle".l, "que"."elle".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("qu"."'"."elles".l, "que"."elles".m) -> forme_usuelle(l,m);%
 
  
 
