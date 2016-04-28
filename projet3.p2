@@ -95,7 +95,10 @@
  forme_usuelle("d"."'"."une".l, "de"."une".m) -> forme_usuelle(l,m);
  forme_usuelle("du".l, "de"."le".m) -> forme_usuelle(l,m);
  forme_usuelle("l"."'"."oncle".l, "le"."oncle".m) -> forme_usuelle(l,m);
- 
+ forme_usuelle("qu"."'"."il".l, "que"."il".m) -> forme_usuelle(l,m);
+ forme_usuelle("qu"."'"."ils".l, "que"."ils".m) -> forme_usuelle(l,m);
+ forme_usuelle("qu"."'"."elle".l, "que"."elle".m) -> forme_usuelle(l,m);
+ forme_usuelle("qu"."'"."elles".l, "que"."elles".m) -> forme_usuelle(l,m);
 
  
 
