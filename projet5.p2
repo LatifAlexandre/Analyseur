@@ -1,0 +1,115 @@
+%prolog2 <chemin et nom du fichier>#
+%insert("nom_du_fichier");%
+
+ phrase(u,v,<affirmation,reste>) -> ph_aff(u,".".v,reste); %reste est la phrase%
+ phrase(u,v) -> ph_int(u,"?".v);
+
+ ph_aff(u,v,l) -> sujet(u,w,a,b,p.l) gv(w,v,a,b);
+
+ ph_int("est"."-"."ce"."que".u,v) -> ph_aff(u,v);
+ ph_int("qui".u,v) -> gv(u,v);
+ ph_int(u,v) -> sujet(u,w,a,b) gv_til(w,v,a,b);			
+ ph_int("pourquoi".u,v) -> sujet(u,w,a,b) gv_til(w,v,a,b);		% est-il -> til %
+ ph_int("de"."qui".u,v) -> sujet(u,w,a,b) gv_til_partiel(w,v,a,b);
+ ph_int("que"."sais"."-"."tu".u,u) ->;
+
+ sujet(u,v,a,singulier) -> nom_pr(u,v,a,b);
+
+ gv(u,v,a,b) -> verbe(u,w,b) gn(w,v,a,b);
+
+ gv_til(u,v,a,b) -> verbe(u,"-".w,b) pronom(w,x,a,b) gn(x,v,a,b);
+
+ gv_til_partiel(u,v,a,b) -> verbe(u,"-".w,b) pronom(w,x,a,b) gn_partiel(x,v,a,b);
+
+%Ici on n a pas besoin de savoir si c est masculin ou feminin %
+ verbe("est".u,u,singulier) ->;
+ verbe("sont".u,u,pluriel) ->;
+ 
+ gn(u,v,a,singulier) -> nom_pr(u,v,a,b);
+ gn(u,v,a,b) -> art_ind(u,w,a,b) nom_com1(w,v,a,b);
+ gn(u,v,a,b) -> art_def(u,w,a,b) nom_com2(w,x,a,b) gp(x,v);
+
+ gn_partiel(u,v,a,b) -> art_def(u,w,a,b) nom_com2(w,v,a,b);
+
+ art_def("le".u,u,masculin,singulier) ->;
+ art_def("la".u,u,feminin,singulier) ->;
+ art_def("les".u,u,a,pluriel) ->;
+
+ art_ind("un".u,u,masculin,singulier) ->;
+ art_ind("une".u,u,feminin,singulier) ->;
+ art_ind("des".u,u,a,pluriel) ->;
+
+ gp("de".u,v) -> gn(u,v,a,b); %groupe prepositionnel%
+
+ pronom("il".u,u,masculin,singulier) ->;
+ pronom("ils".u,u,masculin,pluriel) ->;
+ pronom("elle".u,u,feminin,singulier) ->;
+ pronom("elles".u,u,feminin,pluriel) ->;
+
+ nom_com1("homme".u,u,masculin,singulier,<homme(x,y),x,y>) ->;
+ nom_com1("hommes".u,u,masculin,pluriel,<hommes(x,y),x,y>) ->;
+ nom_com1("femme".u,u,feminin,singulier,<femme(x,y),x,y>) ->;
+ nom_com1("femmes".u,u,feminin,pluriel,<femmes(x,y),x,y>) ->;
+
+ nom_com2("pere".u,u,masculin,singulier,<pere(x,y),x,y>) ->;
+ nom_com2("mere".u,u,feminin,singulier,<mere(x,y),x,y>) ->;
+ nom_com2("frere".u,u,masculin,singulier,<frere(x,y),x,y>) ->;
+ nom_com2("freres".u,u,masculin,pluriel,<freres(x,y),x,y>) ->;
+ nom_com2("soeur".u,u,feminin,singulier,<soeur(x,y),x,y>) ->;
+ nom_com2("soeurs".u,u,feminin,pluriel,<soeurs(x,y),x,y>) ->;
+ nom_com2("fils".u,u,masculin,singulier,<fils(x,y),x,y>) ->;
+ nom_com2("fille".u,u,feminin,singulier,<fille(x,y),x,y>) ->;
+ nom_com2("filles".u,u,feminin,pluriel,<filles(x,y),x,y>) ->;
+ nom_com2("oncle".u,u,masculin,singulier,<oncle(x,y),x,y>) ->;
+ nom_com2("oncles".u,u,masculin,pluriel,<oncles(x,y),x,y>) ->;
+ nom_com2("tante".u,u,feminin,singulier,<tante(x,y),x,y>) ->;
+ nom_com2("tantes".u,u,feminin,pluriel,<tantes(x,y),x,y>) ->;
+ nom_com2("cousin".u,u,masculin,singulier,<cousin(x,y),x,y>) ->;
+ nom_com2("cousins".u,u,masculin,pluriel,<cousins(x,y),x,y>) ->;
+ nom_com2("cousine".u,u,feminin,singulier,<cousine(x,y),x,y>) ->;
+ nom_com2("cousines".u,u,feminin,pluriel,<cousines(x,y),x,y>) ->;
+ nom_com2("grand"."-"."pere".u,u,masculin,singulier,<grand_pere(x,y),x,y>) ->;
+ nom_com2("grand"."-"."peres".u,u,masculin,pluriel,<grand_peres(x,y),x,y>) ->;
+ nom_com2("grand"."-"."mere".u,u,feminin,singulier,<grand_mere(x,y),x,y>) ->;
+ nom_com2("grand"."-"."meres".u,u,feminin,pluriel,<grand_meres(x,y),x,y>) ->;
+ nom_com2("petit"."-"."fils".u,u,masculin,singulier,<petit_fils(x,y),x,y>) ->;
+ nom_com2("petits"."-"."fils".u,u,masculin,pluriel,<petits_fils(x,y),x,y>) ->;
+ nom_com2("petite"."-"."fille".u,u,feminin,singulier,<petite_fille(x,y),x,y>) ->;
+ nom_com2("petites"."-"."filles".u,u,feminin,pluriel,<petites_filles(x,y),x,y>) ->;
+
+ nom_pr("Marie".u,u,feminin,singulier,Marie) ->;
+ nom_pr("Nina".u,u,feminin,singulier,Nina) ->;
+ nom_pr("Lea".u,u,feminin,singulier,Lea) ->;
+ nom_pr("Jade".u,u,feminin,singulier,Jade) ->;
+ nom_pr("Manon".u,u,feminin,singulier,Manon) ->;
+ nom_pr("Paul".u,u,masculin,singulier,Paul) ->;
+ nom_pr("Jean".u,u,masculin,singulier,Jean) ->;
+ nom_pr("Luc".u,u,masculin,singulier,Luc) ->;
+ nom_pr("Tom".u,u,masculin,singulier,Tom) ->;
+ nom_pr("Hugo".u,u,masculin,singulier,Hugo) ->;
+ 
+ %---------- Regles de forme usuelle ----------%
+ 
+ forme_usuelle( nil, nil)->;
+ forme_usuelle( x.l, x.m) -> forme_usuelle(l, m);
+ %forme_usuelle("d"."'"."un".l, "de"."un".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("d"."'"."une".l, "de"."une".m) -> forme_usuelle(l,m);%
+ forme_usuelle("d"."'".l, "de".m) -> forme_usuelle(l,m);
+ forme_usuelle("du".l, "de"."le".m) -> forme_usuelle(l,m);
+ %forme_usuelle("l"."'"."oncle".l, "le"."oncle".m) -> forme_usuelle(l,m);%
+ forme_usuelle("l"."'".l, "le".m) -> forme_usuelle(l,m);
+ forme_usuelle("qu"."'".l, "que".m) -> forme_usuelle(l,m);
+ %forme_usuelle("qu"."'"."ils".l, "que"."ils".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("qu"."'"."elle".l, "que"."elle".m) -> forme_usuelle(l,m);%
+ %forme_usuelle("qu"."'"."elles".l, "que"."elles".m) -> forme_usuelle(l,m);%
+
+ 
+
+ %---------- Le moteur de discussion ! ----------%
+ go -> line outm("A vous :" ) in_sentence(s,t) suite(s);
+
+ suite("au"."revoir".".".nil) -> ! outml("C'etait un plaisir. Au revoir !");
+
+ suite(s) -> forme_usuelle(s,u) phrase(u,nil) ! outml("La phrase est correcte.") go;
+
+ suite(s) -> outml("Desole je ne comprends pas.") go;
