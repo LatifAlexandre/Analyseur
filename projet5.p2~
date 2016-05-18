@@ -5,11 +5,11 @@
  phrase(u,v,interrogation(l)) -> ph_int(u,"?".v,l);
  ph_aff(u,v,l) -> sujet(u,w,a,b,n) gv(w,v,a,b,<n,l>);
 
- ph_int("est"."-"."ce"."que".u,v,Est_ce_que(l)) -> ph_aff(u,v,l);
+ ph_int("est"."-"."ce"."que".u,v,l) -> ph_aff(u,v,l);
  ph_int("qui".u,v) -> gv(u,v);
  ph_int(u,v,l) -> sujet(u,w,a,b,n) gv_til(w,v,a,b,<n,l>);			
- ph_int("pourquoi".u,v,pourquoi(l)) -> sujet(u,w,a,b,n) gv_til(w,v,a,b,<n,l>);		% est-il -> til %
- ph_int("de"."qui".u,v,de_qui(l)) -> sujet(u,w,a,b,n) gv_til_partiel(w,v,a,b,<n,l>);
+ ph_int("pourquoi".u,v,l) -> sujet(u,w,a,b,n) gv_til(w,v,a,b,<n,l>);		% est-il -> til %
+ ph_int("de"."qui".u,v,l) -> sujet(u,w,a,b,n) gv_til_partiel(w,v,a,b,<n,l>);
  ph_int("que"."sais"."-"."tu".u,u) ->;
 
  sujet(u,v,a,singulier,n) -> nom_pr(u,v,a,b,n); %n = nom propre%

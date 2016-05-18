@@ -1,0 +1,97 @@
+%prolog2 <chemin et nom du fichier>#
+%insert("nom_du_fichier");%
+
+ phrase(u,v) -> ph_aff(u,".".v);
+ phrase(u,v) -> ph_int(u,"?".v);
+
+ ph_aff(u,v) -> sujet(u,w) gv(w,v);
+
+ ph_int("est"."-"."ce"."que".u,v) -> ph_aff(u,v);
+ ph_int("qui".u,v) -> gv(u,v);
+ ph_int(u,v) -> sujet(u,w) gv_til(w,v);			
+ ph_int("pourquoi".u,v) -> sujet(u,w) gv_til(w,v);		% est-il -> til %
+ ph_int("de"."qui".u,v) -> sujet(u,w) gv_til_partiel(w,v);
+ ph_int("que"."sais"."-"."tu".u,u) ->;
+
+ sujet(u,v) -> nom_pr(u,v);
+
+ gv(u,v) -> verbe(u,w) gn(w,v);
+
+ gv_til(u,v) -> verbe(u,"-".w) pronom(w,x) gn(x,v);
+
+ gv_til_partiel(u,v) -> verbe(u,"-".w) pronom(w,x) gn_partiel(x,v);
+
+ verbe("est".u,u) ->;
+ verbe("sont".u,u) ->;
+ 
+ gn(u,v) -> nom_pr(u,v);
+ gn(u,v) -> art_ind(u,w) nom_com1(w,v);
+ gn(u,v) -> art_def(u,w) nom_com2(w,x) gp(x,v);
+
+ gn_partiel(u,v) -> art_def(u,w) nom_com2(w,v);
+
+ art_def("le".u,u) ->;
+ art_def("la".u,u) ->;
+ art_def("les".u,u) ->;
+
+ art_ind("un".u,u) ->;
+ art_ind("une".u,u) ->;
+ art_ind("des".u,u) ->;
+
+ gp("de".u,v) -> gn(u,v);
+
+ pronom("il".u,u) ->;
+ pronom("ils".u,u) ->;
+ pronom("elle".u,u) ->;
+ pronom("elles".u,u) ->;
+
+ nom_com1("homme".u,u) ->;
+ nom_com1("hommes".u,u) ->;
+ nom_com1("femme".u,u) ->;
+ nom_com1("femmes".u,u) ->;
+
+ nom_com2("pere".u,u) ->;
+ nom_com2("mere".u,u) ->;
+ nom_com2("frere".u,u) ->;
+ nom_com2("freres".u,u) ->;
+ nom_com2("soeur".u,u) ->;
+ nom_com2("soeurs".u,u) ->;
+ nom_com2("fils".u,u) ->;
+ nom_com2("fille".u,u) ->;
+ nom_com2("filles".u,u) ->;
+ nom_com2("oncle".u,u) ->;
+ nom_com2("oncles".u,u) ->;
+ nom_com2("tante".u,u) ->;
+ nom_com2("tantes".u,u) ->;
+ nom_com2("cousin".u,u) ->;
+ nom_com2("cousins".u,u) ->;
+ nom_com2("cousine".u,u) ->;
+ nom_com2("cousines".u,u) ->;
+ nom_com2("grand"."-"."pere".u,u) ->;
+ nom_com2("grand"."-"."peres".u,u) ->;
+ nom_com2("grand"."-"."mere".u,u) ->;
+ nom_com2("grand"."-"."meres".u,u) ->;
+ nom_com2("petit"."-"."fils".u,u) ->;
+ nom_com2("petits"."-"."fils".u,u) ->;
+ nom_com2("petite"."-"."fille".u,u) ->;
+ nom_com2("petites"."-"."filles".u,u) ->;
+
+ nom_pr("Marie".u,u) ->;
+ nom_pr("Nina".u,u) ->;
+ nom_pr("Lea".u,u) ->;
+ nom_pr("Jade".u,u) ->;
+ nom_pr("Manon".u,u) ->;
+ nom_pr("Paul".u,u) ->;
+ nom_pr("Jean".u,u) ->;
+ nom_pr("Luc".u,u) ->;
+ nom_pr("Tom".u,u) ->;
+ nom_pr("Hugo".u,u) ->; 
+
+ %---------- Le moteur de discussion ! ----------%
+ go -> line outm("A vous :" ) in_sentence(s,t) suite(s);
+
+ suite("au"."revoir".".".nil) -> ! outml("C'etait un plaisir. Au revoir !");
+
+ suite(s) -> forme_usuelle(s,u) phrase(u,nil) ! outml("La phrase est correcte.") go;
+
+ suite(s) -> outml("Desole je ne comprends pas.") go;
